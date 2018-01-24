@@ -1,20 +1,5 @@
 #! /bin/bash
 
-sshd_config_dir=`find / -name sshd_config`
-check_port=`cat $sshd_config_dir |grep 'Port'`
-read -p "plz input a number to sshd_Port" Port
-if [ $Port -ge 1 ] && [ $Port -le 65535 ]; then
-  echo $Port
-else
-  echo 'plz input 1-65535 number!'
-  read -p "plz input a number to sshd_Port" Port
-  if [ $Port -ge 1 ] && [ $Port -le 65535 ]; then
-    echo $Port
-  else
-    echo 'plz input 1-65535 number!'
-    exit
-fi
-
 function checkos(){
     if [ -f /etc/redhat-release ];then
         OS=CentOS
@@ -88,12 +73,20 @@ function firewall_set(){
     echo "firewall set completed..."
 }
 
-if [ `echo $check_port` == '#Port 22' ]; then
-  sed -i "s/#Port 22/Port "{$Port}"/g" $sshd_config_dir
+sshd_config_dir=`find / -name sshd_config`
+read -p "plz input a number to sshd_Port: " Port
+if [ $Port -ge 1 ] && [ $Port -le 65535 ]; then
+  echo $Port
+else
+  echo 'plz input 1-65535 number!'
+fi
+
+if [ ! -z "`cat $sshd_config_dir | grep '#Port 22'`" ]; then
+  sed -i "s/#Port 22/Port "${Port}"/g" $sshd_config_dir
   firewall_set
   echo 'Successful'
-elif [ `echo $check_port` == 'Port 22' ]; then
-  sed -i "s/22/"{$Port}"/g" $sshd_config_dir
+elif [ ! -z "`cat $sshd_config_dir | grep 'Port 22'`" ]; then
+  sed -i "s/22/"${Port}"/g" $sshd_config_dir
   firewall_set
   echo 'Successful'
 fi
