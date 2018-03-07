@@ -75,7 +75,7 @@ function firewall_set(){
     echo "firewall set completed..."
 }
 
-# Get input port port
+# Get input port number
 function get_port_number() {
   read -p "plz input a number to sshd_Port: " Port
   return $Port
