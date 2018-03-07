@@ -71,7 +71,7 @@ function firewall_set(){
     echo "firewall set completed..."
 }
 
-#run
+# Run
 sshd_config_dir=`find / -name sshd_config`
 port_number=`cat /etc/ssh/sshd_config |grep -w 'Port'|awk '{print $2}'`
 read -p "plz input a number to sshd_Port: " Port
