@@ -92,5 +92,5 @@ if [ "$port_number" -eq '22' ]; then
   fi
 elif [ "$port_number" != '22' ]; then
   echo "$port_number"
-  echo "this default port number is change!"
+  echo "The default port has been changed"
 fi
