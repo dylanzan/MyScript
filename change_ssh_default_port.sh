@@ -98,9 +98,10 @@ if [ "$port_number" -eq '22' ]; then
       fi
     else
       echo 'plz input 1-65535 number,runing this script again'
+      exit
     fi
   elif [ "$port_number" != '22' ]; then
     echo "$port_number"
     echo "The default port has been changed"
     exit
-  fi
+fi
