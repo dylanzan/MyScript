@@ -1,4 +1,7 @@
 #! /bin/bash
+# Get config
+sshd_config_dir=`find / -name sshd_config`
+port_number=`cat $sshd_config_dir |grep -w 'Port'|awk '{print $2}'`
 
 function checkos(){
     if [ -f /etc/redhat-release ];then
@@ -71,29 +74,37 @@ function firewall_set(){
     echo "firewall set completed..."
 }
 
-# Run
-sshd_config_dir=`find / -name sshd_config`
-port_number=`cat $sshd_config_dir |grep -w 'Port'|awk '{print $2}'`
-
-if [ "$port_number" -eq '22' ]; then
+# Get input port port
+function get_port_number() {
   read -p "plz input a number to sshd_Port: " Port
-  if [ $Port -ge 1 ] && [ $Port -le 65535 ]; then
-    echo $Port
-    if [ ! -z "`cat $sshd_config_dir | grep '#Port 22'`" ]; then
-      sed -i "s/#Port 22/Port "${Port}"/g" $sshd_config_dir
-      firewall_set
-      echo 'Successful'
-    elif [ ! -z "`cat $sshd_config_dir | grep 'Port 22'`" ]; then
-      sed -i "s/22/"${Port}"/g" $sshd_config_dir
-      firewall_set
-      echo 'Successful'
+  return $Port
+}
+
+# Change port
+function chang_port(Port) {
+  if [ "$port_number" -eq '22' ]; then
+    if [ $Port -ge 1 ] && [ $Port -le 65535 ]; then
+      echo $Port
+      if [ ! -z "`cat $sshd_config_dir | grep '#Port 22'`" ]; then
+        sed -i "s/#Port 22/Port "${Port}"/g" $sshd_config_dir
+        firewall_set
+        echo 'Successful'
+        exit
+      elif [ ! -z "`cat $sshd_config_dir | grep 'Port 22'`" ]; then
+        sed -i "s/22/"${Port}"/g" $sshd_config_dir
+        firewall_set
+        echo 'Successful'
+        exit
+      fi
+    else
+      echo 'plz input 1-65535 number,runing this script again'
     fi
-  else
-    echo 'plz input 1-65535 number!'
+  elif [ "$port_number" != '22' ]; then
+    echo "$port_number"
+    echo "The default port has been changed"
     exit
   fi
-elif [ "$port_number" != '22' ]; then
-  echo "$port_number"
-  echo "The default port has been changed"
-  exit
-fi
+}
+
+# Run
+chang_port(get_port_number)
