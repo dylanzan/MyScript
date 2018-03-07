@@ -1,4 +1,5 @@
 #! /bin/bash
+
 # Get config
 sshd_config_dir=`find / -name sshd_config`
 port_number=`cat $sshd_config_dir |grep -w 'Port'|awk '{print $2}'`
