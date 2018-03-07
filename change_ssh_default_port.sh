@@ -80,9 +80,9 @@ function get_port_number() {
   return $Port
 }
 
-# Change port
-function chang_port(Port) {
-  if [ "$port_number" -eq '22' ]; then
+# Run
+if [ "$port_number" -eq '22' ]; then
+  get_port_number
     if [ $Port -ge 1 ] && [ $Port -le 65535 ]; then
       echo $Port
       if [ ! -z "`cat $sshd_config_dir | grep '#Port 22'`" ]; then
@@ -104,7 +104,3 @@ function chang_port(Port) {
     echo "The default port has been changed"
     exit
   fi
-}
-
-# Run
-chang_port(get_port_number)
