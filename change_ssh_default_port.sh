@@ -75,8 +75,8 @@ function firewall_set(){
 sshd_config_dir=`find / -name sshd_config`
 port_number=`cat $sshd_config_dir |grep -w 'Port'|awk '{print $2}'`
 
-read -p "plz input a number to sshd_Port: " Port
 if [ "$port_number" -eq '22' ]; then
+  read -p "plz input a number to sshd_Port: " Port
   if [ $Port -ge 1 ] && [ $Port -le 65535 ]; then
     echo $Port
     if [ ! -z "`cat $sshd_config_dir | grep '#Port 22'`" ]; then
@@ -90,8 +90,10 @@ if [ "$port_number" -eq '22' ]; then
     fi
   else
     echo 'plz input 1-65535 number!'
+    exit
   fi
 elif [ "$port_number" != '22' ]; then
   echo "$port_number"
   echo "The default port has been changed"
+  exit
 fi
