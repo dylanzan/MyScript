@@ -73,7 +73,8 @@ function firewall_set(){
 
 # Run
 sshd_config_dir=`find / -name sshd_config`
-port_number=`cat /etc/ssh/sshd_config |grep -w 'Port'|awk '{print $2}'`
+port_number=`cat $sshd_config_dir |grep -w 'Port'|awk '{print $2}'`
+
 read -p "plz input a number to sshd_Port: " Port
 if [ "$port_number" -eq '22' ]; then
   if [ $Port -ge 1 ] && [ $Port -le 65535 ]; then
