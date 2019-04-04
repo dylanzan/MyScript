@@ -130,8 +130,6 @@ class WyyReptile(object):
     def _run(self):
         page=1
         params,encSecKey=self.get_params(page)
-        #params='YH6oCEDhaDbhdnY5g5vJ8FjZiNW6ehO8cxfygH8tPHDBCfQ4R5BS5V02kXtjmvYw+b9SqCho7zBKd7yukflLAEURXdkJ5mTf4J5roJR1zsWNW2GYKDPoPnzyG+a+1hLCOxwE/ElKuaZc52zOg/b486k4DeGMUzWDABlJlLL1/jYaZlbA7UBSxYGGEPtm96jZ'
-        #encSecKey='56073bc8cab0e2523b9501d7f9f801c277736cb7e78a5381e2f5a097a524675811b73fcc0f785fada3810c019e078b04d28be1c21b2469b550c8339b7070c483f903cc7910b3c144bbd10594f63b28ac3f0e958b135d526bb0bf55960c8715ba8af3d58b45b6b987e4e7187d1e7e8e678df5af5d444252e10c619b5a7b394bcc'
         data={'params':params,'encSecKey':encSecKey}
         resp=self._getHtml(self.url,data)
         print(resp)
