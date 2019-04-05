@@ -140,15 +140,14 @@ class WyyReptile(object):
         data={'params':params,'encSecKey':encSecKey}
         songsIdPage=self._getHttpConnection(self.url,data)
         songsIdDict=self._getRecommendSongsId(songsIdPage)
-        for k in songsIdDict: 
+        for k in songsIdDict:
             songUrl='https://music.163.com/weapi/v1/resource/comments/R_SO_4_'+str(songsIdDict[k])+'?csrf_token='
-            print(songUrl)
+            print(k+'  正在写入……')
             songsComments=self._getHttpConnection(songUrl,data)
-            print(songsComments)
             comments=self._getHotComments(songsComments)
             for res in comments:
                 self._writeFile(str(k),str(res+'\n'+'---------------------------------------'+'\n'))
+            print(k+'  已完成')
 
 if __name__ == "__main__":
     WyyReptile('https://music.163.com/weapi/v2/discovery/recommend/songs?csrf_token=','/media/data/VsCodeProject/songsComments/')._run()
-   
