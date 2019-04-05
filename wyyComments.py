@@ -18,7 +18,7 @@ class WyyReptile(object):
              'Accept-Encoding': 'gzip, deflate',
              'Accept-Language': 'zh-CN,zh;q=0.9',
              'Connection': 'keep-alive',
-             'Cookie': 'WM_TID=36fj4OhQ7NdU9DhsEbdKFbVmy9tNk1KM; _iuqxldmzr_=32; _ntes_nnid=26fc3120577a92f179a3743269d8d0d9,1536048184013; _ntes_nuid=26fc3120577a92f179a3743269d8d0d9; __utmc=94650624; __utmz=94650624.1536199016.26.8.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); WM_NI=2Uy%2FbtqzhAuF6WR544z5u96yPa%2BfNHlrtTBCGhkg7oAHeZje7SJiXAoA5YNCbyP6gcJ5NYTs5IAJHQBjiFt561sfsS5Xg%2BvZx1OW9mPzJ49pU7Voono9gXq9H0RpP5HTclE%3D; WM_NIKE=9ca17ae2e6ffcda170e2e6eed5cb8085b2ab83ee7b87ac8c87cb60f78da2dac5439b9ca4b1d621f3e900b4b82af0fea7c3b92af28bb7d0e180b3a6a8a2f84ef6899ed6b740baebbbdab57394bfe587cd44b0aebcb5c14985b8a588b6658398abbbe96ff58d868adb4bad9ffbbacd49a2a7a0d7e6698aeb82bad779f7978fabcb5b82b6a7a7f73ff6efbd87f259f788a9ccf552bcef81b8bc6794a686d5bc7c97e99a90ee66ade7a9b9f4338cf09e91d33f8c8cad8dc837e2a3; JSESSIONID-WYYY=G%5CSvabx1X1F0JTg8HK5Z%2BIATVQdgwh77oo%2BDOXuG2CpwvoKPnNTKOGH91AkCHVdm0t6XKQEEnAFP%2BQ35cF49Y%2BAviwQKVN04%2B6ZbeKc2tNOeeC5vfTZ4Cme%2BwZVk7zGkwHJbfjgp1J9Y30o1fMKHOE5rxyhwQw%2B%5CDH6Md%5CpJZAAh2xkZ%3A1536204296617; __utma=94650624.1052021654.1536048185.1536199016.1536203113.27; __utmb=94650624.12.10.1536203113',
+             'Cookie':'nts_mail_user=zsc9602@163.com:-1:1; mail_psc_fingerprint=5ad9e89f6d01b06d4000931415d2947e; _iuqxldmzr_=32; _ntes_nnid=fc752d0b5f3d887efbd891792ff554f4,1548905023326; _ntes_nuid=fc752d0b5f3d887efbd891792ff554f4; WM_TID=qBPZxl7vSjhBVAFBFBMpkZ0D6e7jt2KV; usertrack=CrHubFxVh6tJuSgdA14UAg==; __remember_me=true; P_INFO=zsc9602@163.com|1554033066|0|mail163|00&99|CN&1553910313&cloudmusic#CN&null#10#0#0|178405&0|cloudmusic|zsc9602@163.com; WM_NI=vYDcbUctPVLO9AfJI7h%2BZ4w%2FyDSbuBRswJxiwh3mKaNNOvrY5VczdXAp0FD5aseeQF7cb5Wq2ZRw2oC0T%2B%2BdvF4Il%2BIvNDwvv8IQqY3JgZyTVUgoZb0xof%2FYy5bvQJuaWmU%3D; WM_NIKE=9ca17ae2e6ffcda170e2e6ee89f553bb8aa193b58089968ba3c14e938a9f85ee64b3b39fa4c66badf0fc83c72af0fea7c3b92ab6878c84e15fa1aca0b7cf45fb9faaabcc3dacf596d5f625bb9c9d83f84a92adb9abfb63b5b8fd8eca6b8e928197f153f78aad9be75483b000a7c73fa3adab86d44ef5bdaed6d67bf2869e98b16581f09cccaa70b69afcaaef218baa82a5f67eb6e887b2f453f196a9bbfc60968ba990d96af4a8a187ae53bbebae97d442b7bf998ed837e2a3; JSESSIONID-WYYY=ccnGrqOHOfJxiQoxX6o%2Fqjh0VzfdjWetgHB73XbHV%5CIw79fs2cUV5C2t1OaRS1wUTJ2O%5Cb6HtMbVbykKjWTP01XmYdm%2BEmICwB98yvAPtj79vl%5CdxyRR%2FE7z4TJptwGjzUSdxEwE7XTSBSHiEzeHXgwxRegFR0tE87aBfrN%5C0tA9CmGO%3A1554435339497; MUSIC_U=a0c23480081ce6755d0872c35b14300d5c88a78378f3cf7832d89337a4d414dcc78d05d80ad8e128b865c7f5d98da64131b299d667364ed3; __csrf=9b9e37aa268af132c217ed10eb2b46bd',
              'Host': 'music.163.com',
              'Referer': 'https://music.163.com/',
              'Upgrade-Insecure-Requests': '1',
@@ -96,29 +96,27 @@ class WyyReptile(object):
         encSecKey = self.RSAencrypt(i, e, f)
         return encText, encSecKey
 
-    def _getHtml(self,url,data):
+    #Http链接
+    def _getHttpConnection(self,url,data):
         try:
-            resp=requests.post(self.url,headers=self.headers,data=data)
+            resp=requests.post(url,headers=self.headers,data=data)
             respContent=resp._content
             if resp.status_code==200:
                 return respContent.decode('UTF-8')
         except Exception as e:
             print('Error: '+e)
+    
+    #如果文件存在，便清除重写，如果不存在，创建，写入
+    def _writeFile(self,songName,content):
+        file=str(self.filePath+songName+'.txt')
+        if os.path.exists(file):
+            with open(file,"a+") as f:
+                f.writelines(str(content))
+        else:
+            with open(file,"w+") as f:
+                f.writelines(str(content))
 
-    # def _paseMusicUrl(self,tag):
-    #     reqs=requests.session()
-    #     musicPage=reqs.get(self.url,headers=self.headers)._content
-    #     print(musicPage.decode('UTF-8'))
-    #     soup=BeautifulSoup(musicPage,'html.parser')
-    #     links=soup.find_all(tag)
-    #     for link in links:
-    #         print(link)
-    #     return links
-
-    def _writeFile(self,content):
-        with open(self.filePath,"a") as f:
-            f.writelines(str(content))
-
+    #获取歌曲热评
     def _getHotComments(self,content):
         commentsList=[]
         paseValue=json.loads(content)
@@ -127,16 +125,30 @@ class WyyReptile(object):
             commentsList.append(resStr['content'])
         return commentsList
 
+   #获取每日推荐的歌曲列表 
+    def _getRecommendSongsId(self,pasePageJson):
+        songIdDict={}
+        songsJson=json.loads(pasePageJson)
+        songsArray=list(songsJson['recommend'])
+        for songsInfo in songsArray:
+            songIdDict[str(songsInfo['name'])]=songsInfo['id']
+        return songIdDict
+        
     def _run(self):
         page=1
         params,encSecKey=self.get_params(page)
         data={'params':params,'encSecKey':encSecKey}
-        resp=self._getHtml(self.url,data)
-        print(resp)
-        comments=self._getHotComments(resp)
-        for res in comments:
-            self._writeFile(str(res+'\n'+'---------------------------------------'+'\n'))
+        songsIdPage=self._getHttpConnection(self.url,data)
+        songsIdDict=self._getRecommendSongsId(songsIdPage)
+        for k in songsIdDict: 
+            songUrl='https://music.163.com/weapi/v1/resource/comments/R_SO_4_'+str(songsIdDict[k])+'?csrf_token='
+            print(songUrl)
+            songsComments=self._getHttpConnection(songUrl,data)
+            print(songsComments)
+            comments=self._getHotComments(songsComments)
+            for res in comments:
+                self._writeFile(str(k),str(res+'\n'+'---------------------------------------'+'\n'))
 
 if __name__ == "__main__":
-   WyyReptile('https://music.163.com/weapi/v1/resource/comments/R_SO_4_514761281?csrf_token=','/media/data/VsCodeProject/a.txt')._run()
+    WyyReptile('https://music.163.com/weapi/v2/discovery/recommend/songs?csrf_token=','/media/data/VsCodeProject/songsComments/')._run()
    
