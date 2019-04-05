@@ -12,7 +12,7 @@ class GetGfwFile(object):
     url="https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"
 
 #检测网络连通性
-    def _CheckNetwork(seft):
+    def _CheckNetwork(self):
         testVal=os.popen("ping 114.114.114.114 -c 1").readlines()
         try:
             packetsLoss=testVal[4].split()
@@ -26,9 +26,9 @@ class GetGfwFile(object):
 
 
 #解析gfwlist编码
-    def _Base64Analysis(seft,url):
+    def _Base64Analysis(self,url):
         try:
-            res=requests.get(seft.url)
+            res=requests.get(self.url)
             resBase64=res.text
             resValue=base64.b64decode(resBase64)
             return str(resValue,encoding="utf-8")
@@ -36,9 +36,9 @@ class GetGfwFile(object):
             print("Analysis Error!")
 
 #指定路径创建pac文件
-    def _WriteFile(seft,filePath):
+    def _WriteFile(self,filePath):
         try:
-            getListFileValues=seft._Base64Analysis(seft.url)
+            getListFileValues=self._Base64Analysis(self.url)
             if os.path.exists(filePath)==True:#如果存在，先删除再创建
                 os.remove(filePath)
                 with open(filePath,"a+") as f:
@@ -58,11 +58,11 @@ class GetGfwFile(object):
             print("File Write Error!")
 
 #执行
-    def  run(seft):
-        if seft._CheckNetwork()!="False":
+    def  run(self):
+        if self._CheckNetwork()!="False":
             print("运行此脚本请保证脚本的运行权限，并保证能联通互联网的情况下；请给需要创建的文件指定绝对路径，如没有指定路径，便在本脚本所在目录下创建。望您知晓")
             filePath = input("请输入文件路径：")
-            seft._WriteFile(filePath)
+            self._WriteFile(filePath)
 
 if __name__ == '__main__':
     getGfwFile=GetGfwFile()
