@@ -168,16 +168,14 @@ class WyyReptile(object):
                 print(k+'  正在写入……')
                 songsComments = self._getHttpConnection(songUrl, data)
                 comments = self._getHotComments(songsComments)
-                try:
-                    for res in comments:
+                for res in comments:
+                    try:
                         self._writeFile(k, str(
                             res+'\n'+'---------------------------------------'+'\n'))
-                    print(k+'  已完成')
-                except:
-                    for res in comments:
-                        self._writeFile('ErrorName',str(
+                    except:
+                        self._writeFile('ErrorName', str(
                             res+'\n'+'---------------------------------------'+'\n'))
-                    print('ErrorName'+'  已完成')
+                print(k+'  已完成')
         except Exception as e:
             print('Error: '+e)
 
