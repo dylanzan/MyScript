@@ -10,10 +10,11 @@ headers={}
 headers['Authorization']='APPCODE ' + appcode
 
 ips_1=[]
-with open('./visit_ip.txt') as f:
+with open('/media/data/ip.txt') as f:
     for line in f.readlines():
         ips_1.append(line.strip('\n'))
 ips_2 = list(set(ips_1))
+print(ips_2)
 
 
 def ip_address_check(ip):
